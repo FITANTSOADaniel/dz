@@ -37,7 +37,6 @@ public class TransactionInDatabase implements TransactionRepository{
 
                 // 1. Retirer l'argent
                 debit.setBigDecimal(1, transaction.getAmount());
-                debit.setInt(2, transaction.getFromUserId());
                 debit.setBigDecimal(3, transaction.getAmount());
 
                 int debitRows = debit.executeUpdate();
@@ -50,7 +49,6 @@ public class TransactionInDatabase implements TransactionRepository{
 
                 // 2. Ajouter l'argent
                 credit.setBigDecimal(1, transaction.getAmount());
-                credit.setInt(2, transaction.getToUserId());
 
                 int creditRows = credit.executeUpdate();
 
@@ -61,8 +59,6 @@ public class TransactionInDatabase implements TransactionRepository{
                 }
 
                 // 3. Enregistrer la transaction
-                transactionSQL.setInt(1, transaction.getFromUserId());
-                transactionSQL.setInt(2, transaction.getToUserId());
                 transactionSQL.setBigDecimal(3, transaction.getAmount());
 
                 transactionSQL.executeUpdate();

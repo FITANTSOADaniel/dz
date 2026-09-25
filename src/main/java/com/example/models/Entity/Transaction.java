@@ -26,8 +26,6 @@ public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private int fromUserId;
-    private int toUserId;
     private BigDecimal amount;
     private LocalDateTime createdAt;
     @ManyToOne 

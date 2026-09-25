@@ -14,8 +14,6 @@ public class TransactionService {
     public Transaction save(TransactionDTO transactionDTO){
         Transaction transaction = new Transaction();
         transaction.setAmount(transactionDTO.getAmount());
-        transaction.setFromUserId(transactionDTO.getFromUserId());
-        transaction.setToUserId(transactionDTO.getToUserId());
         return transactionRepository.save(transaction);
     }
 }
