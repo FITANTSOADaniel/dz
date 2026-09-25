@@ -9,7 +9,9 @@ import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -26,10 +28,16 @@ import jakarta.ws.rs.core.GenericType;
 import jakarta.ws.rs.core.Response;
 
 public class IntegrationTest extends JerseyTest{
-    private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("testPU");
+            
+    private static EntityManagerFactory emf;
     private EntityManager em;
     private UserRepositoryJpa userRepository;
     private UserService userService;
+
+    @BeforeAll
+    static void startUp() {
+        emf = Persistence.createEntityManagerFactory("testPU");
+    }
 
     @Override
     protected ResourceConfig configure() {
@@ -97,6 +105,13 @@ public class IntegrationTest extends JerseyTest{
     public void tearDown() {
         if (em != null && em.isOpen()) {
             em.close();
+        }
+    }
+
+    @AfterAll
+    static void close() {
+        if (emf != null) {
+            emf.close();
         }
     }
 }

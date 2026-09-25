@@ -2,12 +2,15 @@ package com.example.Controller.UserController;
 
 import java.util.List;
 
+import com.example.dto.UserDTO;
 import com.example.models.Entity.User;
 import com.example.services.UserService;
 
 import jakarta.inject.Inject;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
+import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.core.MediaType;
@@ -40,4 +43,14 @@ public class UserController {
                 .map(user -> Response.ok(user).build())
                 .orElse(Response.status(Response.Status.NOT_FOUND).build());
     }
+
+    @POST 
+    public Response createUser(@Valid UserDTO userDTO){
+        User user = userService.createUser(userDTO);
+
+        return Response
+                .status(Response.Status.CREATED)
+                .entity(user)
+                .build();
+        }
 }
