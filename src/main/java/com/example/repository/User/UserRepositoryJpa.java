@@ -31,7 +31,6 @@ public class UserRepositoryJpa implements UserRepository{
     public User save(User user){
         entityManager.persist(user);
         entityManager.flush();
-
         return user;
     }
     @Override
@@ -41,12 +40,23 @@ public class UserRepositoryJpa implements UserRepository{
             .getResultList();
         return users;
     }
+
     @Override
     public void deleteUser(String id){
+        User user = entityManager.find(User.class, Integer.parseInt(id));
 
+        if (user != null) {
+            entityManager.remove(user);
+        }
     }
     @Override
     public User updateUser(User newUser, String id){
-        return new User();
+        User user = entityManager.find(User.class, Integer.parseInt(id));
+        user.setBalance(newUser.getBalance());
+        user.setEmail(newUser.getEmail());
+        user.setFirstName(newUser.getFirstName());
+        user.setName(newUser.getName());
+        user.setPhone(newUser.getPhone());
+        return user;
     }
 }

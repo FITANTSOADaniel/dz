@@ -10,6 +10,7 @@ import com.example.repository.User.UserRepository;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 
 @ApplicationScoped 
 public class UserService {
@@ -23,6 +24,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    @Transactional
     public User createUser(UserDTO userDTO){
         User user = new User();
         user.setFirstName(userDTO.getFirstName());
@@ -36,10 +38,12 @@ public class UserService {
         return userRepository.getAll();
     }
 
+    @Transactional 
     public void deleteUser(String id){
         userRepository.deleteUser(id);
     }
 
+    @Transactional 
     public User updateUser(UserDTO userDTO, String id){
         User newUser = new User();
         newUser.setFirstName(userDTO.getFirstName());
