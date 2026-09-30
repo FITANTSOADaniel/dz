@@ -17,27 +17,15 @@
         <class>com.example.models.User</class>
 
         <properties>
-            <property
-                name="jakarta.persistence.jdbc.driver"
-                value="org.postgresql.Driver"/>
-            <property
-                name="jakarta.persistence.jdbc.url"
-                value="jdbc:postgresql://localhost:5432/java_database"/>
-            <property
-                name="jakarta.persistence.jdbc.user"
-                value="postgres"/>
-            <property
-                name="jakarta.persistence.jdbc.password"
-                value="daniel"/>
+            <property name="jakarta.persistence.jdbc.driver" value="org.postgresql.Driver"/>
 
             <!-- Génération automatique du schéma SQL -->
             <!-- Options : update, create, drop-and-create, validate -->
-            <property name="jakarta.persistence.schema-generation.database.action" value="update" />
-
+            <!-- <property name="jakarta.persistence.schema-generation.database.action" value="update" /> -->
             <!-- Affichage des requêtes SQL dans la console (Utile en dev) -->
             <property name="hibernate.show_sql" value="true" />
             <property name="hibernate.format_sql" value="true" />
-            <property name="hibernate.hbm2ddl.auto" value="update"/>
+            <property name="hibernate.hbm2ddl.auto" value="none"/>
             
         </properties>
 
@@ -64,6 +52,36 @@
             <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
 
             <property name="hibernate.show_sql" value="true"/>
+
+        </properties>
+
+    </persistence-unit>
+
+    <persistence-unit name="testContainers">
+
+        <provider>
+            org.hibernate.jpa.HibernatePersistenceProvider
+        </provider>
+
+        <class>com.example.models.User</class>
+
+        <properties>
+
+            <property
+                name="jakarta.persistence.jdbc.driver"
+                value="org.postgresql.Driver"/>
+
+            <property
+                name="hibernate.hbm2ddl.auto"
+                value="create-drop"/>
+
+            <property
+                name="hibernate.show_sql"
+                value="true"/>
+
+            <property
+                name="hibernate.format_sql"
+                value="true"/>
 
         </properties>
 

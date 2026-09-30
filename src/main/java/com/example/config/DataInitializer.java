@@ -11,15 +11,19 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Observes;
 import jakarta.enterprise.context.Initialized;
 import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
 
 @ApplicationScoped
 public class DataInitializer {
 
     private final UserRepository userRepository;
+    private final EntityManager entityManager;
 
     @Inject
-    public DataInitializer(@JpaQualifier UserRepository userRepository) {
+    public DataInitializer(@JpaQualifier UserRepository userRepository, EntityManager entityManager) {
         this.userRepository = userRepository;
+        this.entityManager = entityManager;
     }
 
     public void init(@Observes @Initialized(ApplicationScoped.class) Object event) {
@@ -37,6 +41,11 @@ public class DataInitializer {
     }
 
     private void createUsers() {
+
+    EntityTransaction transaction = entityManager.getTransaction();
+
+    try {
+        transaction.begin();
 
         User user1 = new User(
             "Rakoto",
@@ -68,5 +77,16 @@ public class DataInitializer {
         userRepository.save(user1);
         userRepository.save(user2);
         userRepository.save(user3);
+
+        transaction.commit();
+
+    } catch (Exception e) {
+
+        if (transaction.isActive()) {
+            transaction.rollback();
+        }
+
+        throw e;
     }
+}
 }

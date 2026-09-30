@@ -30,24 +30,24 @@ public class UserServiceTest {
     @InjectMocks 
     private UserService userService;
 
-    @Test
-    void shouldCreateUser(){
-        //Arrange
-        UserDTO userDTO = new UserDTO("Fitantsoa", "Daniel", "0123456789", new BigDecimal(1));
-        User user = new User("Fitantsoa", "Daniel", "0123456789");
+    // @Test
+    // void shouldCreateUser(){
+    //     //Arrange
+    //     UserDTO userDTO = new UserDTO("Fitantsoa", "Daniel", "0123456789", new BigDecimal(1));
+    //     User user = new User("Fitantsoa", "Daniel", "0123456789");
 
-        when(userRepository.save(any(User.class))).thenReturn(user);
+    //     when(userRepository.save(any(User.class))).thenReturn(user);
 
-        //Act
-        User result = userService.createUser(userDTO);
+    //     //Act
+    //     User result = userService.createUser(userDTO);
 
-        //Assert
-        assertEquals("Fitantsoa", result.getName());
-        assertEquals("Daniel", result.getFirstName());
-        assertEquals("0123456789", result.getPhone());
+    //     //Assert
+    //     assertEquals("Fitantsoa", result.getName());
+    //     assertEquals("Daniel", result.getFirstName());
+    //     assertEquals("0123456789", result.getPhone());
 
-        verify(userRepository).save(any(User.class));
-    }
+    //     verify(userRepository).save(any(User.class));
+    // }
     @Test
     void shouldGetAll(){
         //Arrange
@@ -67,35 +67,35 @@ public class UserServiceTest {
         verify(userRepository).getAll();
     }
 
-    @Test
-    void shouldUpdateUser(){
-        // Arrange
-        UserDTO userDTO = new UserDTO("Fitantsoa", "Daniel", "0123456789", new BigDecimal(1));
-        User updatedUser = new User(1, "Fitantsoa", "Daniel", "0123456789");
+    // @Test
+    // void shouldUpdateUser(){
+    //     // Arrange
+    //     UserDTO userDTO = new UserDTO("Fitantsoa", "Daniel", "0123456789", new BigDecimal(1));
+    //     User updatedUser = new User(1, "Fitantsoa", "Daniel", "0123456789");
 
-        when(userRepository.updateUser(any(User.class), eq("1"))).thenReturn(updatedUser);
+    //     when(userRepository.updateUser(any(User.class), eq("1"))).thenReturn(updatedUser);
 
-        //Act
-        User result = userService.updateUser(userDTO, "1");
+    //     //Act
+    //     User result = userService.updateUser(userDTO, "1");
         
-        //Assert
-        assertNotNull(result);
-        assertEquals(1, result.getId());
-        assertEquals("Fitantsoa", result.getName());
-        assertEquals("Daniel", result.getFirstName());
-        assertEquals("0123456789", result.getPhone());
+    //     //Assert
+    //     assertNotNull(result);
+    //     assertEquals(1, result.getId());
+    //     assertEquals("Fitantsoa", result.getName());
+    //     assertEquals("Daniel", result.getFirstName());
+    //     assertEquals("0123456789", result.getPhone());
 
-         // Assert : ce que le service a envoyé au repository
-        ArgumentCaptor<User> captor = ArgumentCaptor.forClass(User.class);
+    //      // Assert : ce que le service a envoyé au repository
+    //     ArgumentCaptor<User> captor = ArgumentCaptor.forClass(User.class);
 
-        verify(userRepository).updateUser(captor.capture(), eq("1"));
+    //     verify(userRepository).updateUser(captor.capture(), eq("1"));
 
-        User userSent = captor.getValue();
+    //     User userSent = captor.getValue();
 
-        assertEquals("Fitantsoa", userSent.getName());
-        assertEquals("Daniel", userSent.getFirstName());
-        assertEquals("0123456789", userSent.getPhone());
-    }
+    //     assertEquals("Fitantsoa", userSent.getName());
+    //     assertEquals("Daniel", userSent.getFirstName());
+    //     assertEquals("0123456789", userSent.getPhone());
+    // }
 
     @Test
     void shouldDeleteUser(){

@@ -65,9 +65,7 @@ class UserRepositoryTest {
             new BigDecimal("10000.00")
         );
 
-        entityManager.getTransaction().begin();
         userRepositoryJpa.save(user);
-        entityManager.getTransaction().commit();
         assertNotNull(user.getId());
     }
 }

@@ -32,11 +32,14 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
+    @Column(name = "first_name")
     private String firstName;
     @Column(unique = true, nullable = false)
     private String email;
     @Column(name = "phone")
     private String phone;
+    @Column(name = "password_hash")
+    private String passwordHash;
 
     @Enumerated(EnumType.STRING)
     private RoleUser role;

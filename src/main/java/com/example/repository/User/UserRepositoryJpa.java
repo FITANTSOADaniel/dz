@@ -9,11 +9,15 @@ import com.example.models.Entity.User;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
 
 @JpaQualifier 
-@ApplicationScoped 
-public class UserRepositoryJpa implements UserRepository{
-    private final EntityManager entityManager;
+@ApplicationScoped
+public class UserRepositoryJpa implements UserRepository, FindUser{
+
+    public UserRepositoryJpa() {}
+
+    private EntityManager entityManager;
 
     @Inject
     public UserRepositoryJpa(EntityManager entityManager) {
@@ -28,11 +32,38 @@ public class UserRepositoryJpa implements UserRepository{
     }
 
     @Override
+    public Optional<User> findByEmail(String email) {
+        return entityManager
+                .createQuery(
+                    "SELECT u FROM User u WHERE u.email = :email",
+                    User.class
+                )
+                .setParameter("email", email)
+                .getResultStream()
+                .findFirst();
+    }
+
+    @Override
     public User save(User user){
-        entityManager.persist(user);
-        entityManager.flush();
+        EntityTransaction transaction = entityManager.getTransaction();
+        transaction.begin();
+
+        try {
+            entityManager.persist(user);
+            entityManager.flush();
+
+            transaction.commit();
+
+        } catch (Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+
+            throw e;
+        }
         return user;
     }
+
     @Override
     public List<User> getAll(){
         List<User> users = entityManager
@@ -49,6 +80,7 @@ public class UserRepositoryJpa implements UserRepository{
             entityManager.remove(user);
         }
     }
+    
     @Override
     public User updateUser(User newUser, String id){
         User user = entityManager.find(User.class, Integer.parseInt(id));

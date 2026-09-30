@@ -6,6 +6,7 @@ import com.example.dto.UserDTO;
 import com.example.models.Entity.User;
 import com.example.services.UserService;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
@@ -32,6 +33,7 @@ public class UserController {
     }
     
     @GET
+    @RolesAllowed("ADMIN")
     public List<User> getAll() {
         return userService.getAll();
     }
@@ -52,5 +54,5 @@ public class UserController {
                 .status(Response.Status.CREATED)
                 .entity(user)
                 .build();
-        }
+    }
 }
