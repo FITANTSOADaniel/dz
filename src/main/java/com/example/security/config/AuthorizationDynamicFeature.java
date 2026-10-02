@@ -1,4 +1,6 @@
-package com.example.security;
+package com.example.security.config;
+
+import com.example.security.filter.RolesAllowedFilter;
 
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.ws.rs.container.DynamicFeature;

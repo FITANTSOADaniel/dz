@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
-import com.example.security.PasswordHasher;
+import com.example.security.config.PasswordHasher;
 
 public class SecurityTest {
 

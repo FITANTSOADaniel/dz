@@ -5,7 +5,7 @@ import com.example.dto.LoginDTO;
 import com.example.dto.UserDTO;
 import com.example.models.Entity.User;
 import com.example.repository.User.UserRepositoryJpa;
-import com.example.security.PasswordHasher;
+import com.example.security.config.PasswordHasher;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;

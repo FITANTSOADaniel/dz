@@ -4,8 +4,8 @@ import java.util.Set;
 
 import org.glassfish.jersey.jackson.JacksonFeature;
 import com.example.Controller.UserController.UserController;
-import com.example.security.AuthorizationDynamicFeature;
-import com.example.security.JwtAuthenticationFilter;
+import com.example.security.config.AuthorizationDynamicFeature;
+import com.example.security.filter.JwtAuthenticationFilter;
 import com.example.Controller.AuthController.AuthController;
 import com.example.Controller.TransactionController.TransactionController;
 

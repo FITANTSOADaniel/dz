@@ -1,4 +1,4 @@
-package com.example.security;
+package com.example.security.config;
 
 import jakarta.ws.rs.core.SecurityContext;
 import java.security.Principal;

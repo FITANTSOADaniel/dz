@@ -1,4 +1,4 @@
-package com.example.security;
+package com.example.security.filter;
 
 import java.io.IOException;
 
@@ -11,7 +11,7 @@ import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebFilter("/*")
+@WebFilter("/api/*")
 public class ServletFilter implements Filter{
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)

@@ -1,4 +1,4 @@
-package com.example.security;
+package com.example.security.filter;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
@@ -12,6 +12,7 @@ import jakarta.ws.rs.ext.Provider;
 
 import java.io.IOException;
 
+import com.example.security.config.JwtSecurityContext;
 import com.example.services.JwtService;
 
 @Provider
@@ -26,9 +27,7 @@ public class JwtAuthenticationFilter implements ContainerRequestFilter {
     }
 
     @Override
-    public void filter(ContainerRequestContext requestContext)
-            throws IOException {
-
+    public void filter(ContainerRequestContext requestContext) throws IOException {
         String path = requestContext
                 .getUriInfo()
                 .getPath();
@@ -40,11 +39,11 @@ public class JwtAuthenticationFilter implements ContainerRequestFilter {
 
         String authorization = requestContext.getHeaderString("Authorization");
 
-        // Pas de header Authorization
         if (authorization == null || !authorization.startsWith("Bearer ")) {
             abort(requestContext, "Token manquant");
             return;
         }
+
         String token = authorization.substring(7);
         
         try {
@@ -54,15 +53,13 @@ public class JwtAuthenticationFilter implements ContainerRequestFilter {
             JwtSecurityContext securityContext = new JwtSecurityContext(email, role);
 
             requestContext.setSecurityContext(securityContext);
-
         } catch (JwtException | IllegalArgumentException e) {
             abort(requestContext, "Token invalide");
         }
     }
 
     private void abort(ContainerRequestContext requestContext, String message) {
-        requestContext.abortWith(
-            Response.status(Response.Status.UNAUTHORIZED)
+        requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED)
                     .entity(message)
                     .build()
         );
