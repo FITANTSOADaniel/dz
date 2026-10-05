@@ -28,9 +28,7 @@ public class JwtAuthenticationFilter implements ContainerRequestFilter {
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
-        String path = requestContext
-                .getUriInfo()
-                .getPath();
+        String path = requestContext.getUriInfo().getPath();
 
         // Routes publiques
         if (path.startsWith("auth/")) {

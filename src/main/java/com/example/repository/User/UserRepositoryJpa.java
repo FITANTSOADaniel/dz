@@ -58,7 +58,6 @@ public class UserRepositoryJpa implements UserRepository, FindUser{
             if (transaction.isActive()) {
                 transaction.rollback();
             }
-
             throw e;
         }
         return user;

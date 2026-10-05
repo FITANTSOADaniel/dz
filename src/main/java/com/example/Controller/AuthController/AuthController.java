@@ -1,10 +1,12 @@
 package com.example.Controller.AuthController;
 
 import com.example.dto.LoginDTO;
+import com.example.dto.RefreshTokenRequest;
 import com.example.dto.TokenResponse;
 import com.example.dto.UserDTO;
 import com.example.models.Entity.User;
 import com.example.services.AuthService;
+import com.example.services.RefreshTokenService;
 
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
@@ -40,10 +42,14 @@ public class AuthController {
     @POST 
     @Path("/login")
     public Response login(LoginDTO loginDTO) {
-        String token = authService.login(loginDTO);
+        TokenResponse response = authService.login(loginDTO);
+        return Response.status(Response.Status.OK).entity(response).build();
+    }
 
-        return Response.ok(
-                new TokenResponse(token)
-        ).build();
+    @POST
+    @Path("/refresh")
+    public Response refresh(RefreshTokenRequest request) {
+        TokenResponse response = authService.refresh(request.getRefreshToken());
+        return Response.status(Response.Status.OK).entity(response).build();
     }
 }

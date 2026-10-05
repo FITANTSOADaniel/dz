@@ -2,7 +2,9 @@ package com.example.services;
 
 import com.example.Qualifier.JpaQualifier;
 import com.example.dto.LoginDTO;
+import com.example.dto.TokenResponse;
 import com.example.dto.UserDTO;
+import com.example.models.Entity.RefreshToken;
 import com.example.models.Entity.User;
 import com.example.repository.User.UserRepositoryJpa;
 import com.example.security.config.PasswordHasher;
@@ -16,14 +18,16 @@ public class AuthService {
     private UserRepositoryJpa userRepository;
     private PasswordHasher passwordHasher;
     private JwtService jwtService;
+    private RefreshTokenService refreshTokenService;
 
     public AuthService() {}
     
     @Inject
-    public AuthService(@JpaQualifier UserRepositoryJpa userRepository, PasswordHasher passwordHasher, JwtService jwtService){
+    public AuthService(@JpaQualifier UserRepositoryJpa userRepository, PasswordHasher passwordHasher, JwtService jwtService, RefreshTokenService refreshTokenService){
         this.userRepository = userRepository;
         this.passwordHasher = passwordHasher;
         this.jwtService = jwtService;
+        this.refreshTokenService = refreshTokenService;
     }
     
     @Transactional 
@@ -34,8 +38,7 @@ public class AuthService {
             );
         }
 
-        String passwordHash =
-                passwordHasher.hash(userDTO.getPassword());
+        String passwordHash = passwordHasher.hash(userDTO.getPassword());
 
         // 3. Créer l'utilisateur
         User user = new User();
@@ -51,8 +54,7 @@ public class AuthService {
         return userRepository.save(user);
     }
 
-    public String login(LoginDTO loginDTO) {
-
+    public TokenResponse login(LoginDTO loginDTO) {
         User user = userRepository
                 .findByEmail(loginDTO.getEmail())
                 .orElseThrow(() ->
@@ -72,10 +74,29 @@ public class AuthService {
             );
         }
 
-        return jwtService.generateToken(
+        String refreshToken = refreshTokenService.create(user);
+
+        String accessToken =  jwtService.generateToken(
                 user.getId(),
                 user.getEmail(),
                 user.getRole().name()
         );
+
+        return new TokenResponse(accessToken, refreshToken);
+    }
+
+    @Transactional
+    public TokenResponse refresh(String rawRefreshToken){
+        RefreshToken oldRefreshToken = refreshTokenService.validate(rawRefreshToken);
+
+        User user = oldRefreshToken.getUser();
+
+        refreshTokenService.revoke(rawRefreshToken);
+
+        String newAccessToken = jwtService.generateToken(user.getId(), user.getEmail(), user.getRole().name());
+
+        String newRefreshToken = refreshTokenService.create(user);
+
+        return new TokenResponse(newAccessToken, newRefreshToken);
     }
 }
