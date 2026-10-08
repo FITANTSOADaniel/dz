@@ -27,13 +27,23 @@ public class UserMapper {
                 .toList();
     }
 
-    public User toEntity(CreateUserDTO createUserDTO){
-        User user = new User();
+    public void updateEntity(User user, CreateUserDTO createUserDTO){
         user.setEmail(createUserDTO.getEmail());
         user.setFirstName(createUserDTO.getFirstName());
         user.setName(createUserDTO.getName());
-        user.setPasswordHash(createUserDTO.getPassword());
         user.setPhone(createUserDTO.getPhone());
-        return user;
+        if (createUserDTO.getPassword() != null && !createUserDTO.getPassword().isBlank()) { 
+            user.setPasswordHash(createUserDTO.getPassword()); 
+        }
+        
+    }
+
+    public User toEntity(CreateUserDTO createUserDTO){ 
+        User user = new User();
+        user.setEmail(createUserDTO.getEmail()); 
+        user.setFirstName(createUserDTO.getFirstName()); 
+        user.setName(createUserDTO.getName()); 
+        user.setPasswordHash(createUserDTO.getPassword()); 
+        user.setPhone(createUserDTO.getPhone()); return user; 
     }
 }
