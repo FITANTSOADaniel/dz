@@ -2,6 +2,7 @@ package mgit.supplychain.resources;
 
 import java.util.List;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
@@ -19,6 +20,7 @@ import mgit.supplychain.dto.ResponseUserDTO;
 import mgit.supplychain.entity.User;
 import mgit.supplychain.services.UserService;
 
+@RolesAllowed({"ADMIN","CLIENT"})
 @Path("/users")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)

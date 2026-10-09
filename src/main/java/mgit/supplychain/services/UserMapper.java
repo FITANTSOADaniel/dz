@@ -17,6 +17,7 @@ public class UserMapper {
         dto.setFirstName(user.getFirstName());
         dto.setName(user.getName());
         dto.setPhone(user.getPhone());
+        dto.setRole(user.getRole());
 
         return dto;
     }
@@ -32,6 +33,7 @@ public class UserMapper {
         user.setFirstName(createUserDTO.getFirstName());
         user.setName(createUserDTO.getName());
         user.setPhone(createUserDTO.getPhone());
+        user.setRole(createUserDTO.getRole());
         if (createUserDTO.getPassword() != null && !createUserDTO.getPassword().isBlank()) { 
             user.setPasswordHash(createUserDTO.getPassword()); 
         }
@@ -44,6 +46,8 @@ public class UserMapper {
         user.setFirstName(createUserDTO.getFirstName()); 
         user.setName(createUserDTO.getName()); 
         user.setPasswordHash(createUserDTO.getPassword()); 
-        user.setPhone(createUserDTO.getPhone()); return user; 
+        user.setPhone(createUserDTO.getPhone());
+        user.setRole(createUserDTO.getRole());
+        return user; 
     }
 }

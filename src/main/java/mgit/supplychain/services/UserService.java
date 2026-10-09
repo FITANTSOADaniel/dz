@@ -3,6 +3,7 @@ package mgit.supplychain.services;
 import java.util.List;
 import java.util.Optional;
 
+import io.quarkus.elytron.security.common.BcryptUtil;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -31,6 +32,9 @@ public class UserService {
     @Transactional 
     public User createUser(CreateUserDTO createUserDTO){
         User user = userMapper.toEntity(createUserDTO);
+        String passwordHash = BcryptUtil.bcryptHash(createUserDTO.getPassword());
+        user.setPasswordHash(passwordHash);
+        user.setRole(createUserDTO.getRole());
         userRepository.persist(user);
         return user;
     }
@@ -40,7 +44,9 @@ public class UserService {
         User existUser = userRepository.findById(id);
         if (existUser == null) return Optional.empty();
 
-        userMapper.updateEntity(existUser, createUserDTO); 
+        userMapper.updateEntity(existUser, createUserDTO);
+        String passwordHash = BcryptUtil.bcryptHash(createUserDTO.getPassword());
+        existUser.setPasswordHash(passwordHash);
         return Optional.of(existUser); }
 
     @Transactional
